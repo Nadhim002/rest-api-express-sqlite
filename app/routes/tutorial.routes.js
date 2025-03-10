@@ -1,14 +1,13 @@
 import express from "express"
-import { createPost , retrieveAll , retrieveAllPublished  , findPost , UpdatePost , deletePost , deleteAll}  from "../controllers/tutorial.controllers.js"
-
+import { createPost , findAll , retrieveAllPublished  , findPost , UpdatePost , deletePost , deleteAll}  from "../controllers/tutorial.controllers.js"
 
 const router = express.Router()
 
 // Create a new Tutorial
 router.post("/",  createPost )
 
-// // Retrieve all Tutorials
-router.get("/",  retrieveAll )
+// // Retrieve all Tutorials with condition
+router.get("/",  findAll )
 
 // Retrieve all published Tutorials
 router.get("/published", retrieveAllPublished )
@@ -24,6 +23,5 @@ router.delete("/:id", deletePost )
 
 // Delete all Tutorials
 router.delete("/", deleteAll )
-
 
 export default router

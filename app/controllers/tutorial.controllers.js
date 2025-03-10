@@ -1,13 +1,24 @@
 import { Tutorial } from "../models/tutorial.model.js"
 
-export function retrieveAll(req, res , next ) {
-  Tutorial.retrieveAll((err, data) => {
-    if (err) {
-      next(err)
-      return
-    }
+export function findAll(req, res , next ) {
 
-    res.status(200).json(data)
+  const contentToSearch = req.query?.title 
+
+  if( !contentToSearch ){
+    res.status(404).json({ msg: `The Parameter Cannot be empty` })
+    return
+  }
+
+  Tutorial.findAll( contentToSearch , 
+
+    (err, data) => {
+      if (err) {
+        next(err)
+        return
+      }
+
+      res.status(200).json(data)
+
   })
 }
 

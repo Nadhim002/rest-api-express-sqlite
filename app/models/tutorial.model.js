@@ -8,11 +8,11 @@ export class Tutorial {
     this.published = tutorial.published || 0
   }
 
-  static retrieveAll(result) {
+  static findAll(  contentToSearch , result) {
 
-    const sqlQuery = "select * from tutorials"
+    const sqlQuery = `select * from tutorials where title like ?  `
 
-    DB.all(sqlQuery, function (err, rows) {
+    DB.all(sqlQuery, [`%${contentToSearch}%`] ,function (err, rows) {
 
       if (err) {
         result(err, null)
