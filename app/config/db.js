@@ -3,19 +3,18 @@ import path from 'path'
 import { fileURLToPath } from 'url';
 
 // Convert `import.meta.url` to `__dirname`
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Resolve the relative path
-const relativePath = '../database/mydata.db';
-const absolutePath = path.resolve(__dirname, relativePath);
+const relativePath = '../database/mydata.db'
+const absolutePath = path.resolve(__dirname, relativePath)
 
 // This is logging records
 const sql3 = sqlite.verbose()
 
 
-const DB = new sqlite.Database( absolutePath , sqlite.OPEN_READWRITE , connected );
-
+const DB = new sqlite.Database( absolutePath , sqlite.OPEN_READWRITE , connected )
 
 function  connected( err ){
 
@@ -25,6 +24,7 @@ function  connected( err ){
     }
 
     console.log("Connected to DB Sucessfully")
+
 }
 
 const sqlQueryForTableCreation = 
@@ -37,10 +37,5 @@ const sqlQueryForTableCreation =
     `
 
 DB.exec( sqlQueryForTableCreation )
-
-
-
-
-
 
 export default DB   

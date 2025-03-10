@@ -4,12 +4,6 @@ import { createPost , retrieveAll , retrieveAllPublished  , findPost , UpdatePos
 
 const router = express.Router()
 
-// router.get("/" , ( req , res  ) => {  res.status(200).json({msg : "Hello World"}) } )
-
-// Testing
-// router.get("/" , createPost )
-
-
 // Create a new Tutorial
 router.post("/",  createPost )
 
@@ -33,5 +27,7 @@ router.delete("/", deleteAll )
 
 
 export default router
+
+
 
 
