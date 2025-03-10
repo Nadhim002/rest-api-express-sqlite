@@ -2,11 +2,10 @@ import sqlite from "sqlite3"
 import path from 'path'
 import { fileURLToPath } from 'url';
 
-// Convert `import.meta.url` to `__dirname`
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// Resolve the relative path
 const relativePath = '../database/mydata.db'
 const absolutePath = path.resolve(__dirname, relativePath)
 

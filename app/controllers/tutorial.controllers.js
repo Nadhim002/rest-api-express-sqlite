@@ -1,20 +1,22 @@
 import { Tutorial } from "../models/tutorial.model.js"
 
-export function retrieveAll(req, res) {
+export function retrieveAll(req, res , next ) {
   Tutorial.retrieveAll((err, data) => {
     if (err) {
-      console.log(err.message)
-      res.json({})
+      next(err)
       return
     }
 
-    console.log(data)
-    res.json(data)
+    res.status(200).json(data)
   })
 }
 
 export function createPost(req, res) {
-  console.log(req.body)
+
+  if (Object.keys(req.body).length === 0) {
+    res.status(400).json({ msg: `The Input Cannot be empty` })
+    return
+  }
 
   const tutorial = new Tutorial({
     title: req.body.title,
@@ -24,104 +26,116 @@ export function createPost(req, res) {
 
   tutorial.createPost((err, data) => {
     if (err) {
-      console.log(err.message)
-      res.json({})
+      next(err)
       return
     }
 
     console.log(data)
-    res.json({})
+    res
+      .status(200)
+      .json({ msg: `The tutorial has been added at ${data} index` })
   })
 }
 
 export function findPost(req, res) {
+
   const id = parseInt(req.params?.id)
 
-  if (id) {
-    Tutorial.findPost(id, (err, row) => {
-      if (err) {
-        console.log(err)
-        res.json({})
-        return
-      }
-
-      if (row) {
-        console.log(row)
-        res.json({ row })
-        return
-      }
-
-      res.json({ msg: "No match Found" })
-    })
+  if (isNaN(id)) {
+    res.status(400).json({ msg: "id must be a Number" })
+    return
   }
-}
 
-export function UpdatePost(req, res) {
-  const id = parseInt(req.params?.id)
-
-  if (id) {
-    Tutorial.deletePost(id, (err, message) => {
-      if (err) {
-        console.log(err)
-        res.json({})
-        return
-      }
-
-      if (message) {
-        console.log(message)
-        res.json({ msg: message })
-        return
-      }
-
-      res.json({ msg: "No match Found to Update" })
-    })
-  }
-}
-
-export function deletePost(req, res) {
-  const id = parseInt(req.params?.id)
-
-  if (id) {
-    Tutorial.deletePost(id, (err, message) => {
-      if (err) {
-        console.log(err)
-        res.json({})
-        return
-      }
-
-      if (message) {
-        console.log(message)
-        res.json({ msg: message })
-        return
-      }
-
-      res.json({ msg: "No match Found to delete" })
-    })
-  }
-}
-
-export function deleteAll(req, res) {
-  Tutorial.deleteAll(function (err, data) {
+  Tutorial.findPost(id, (err, row) => {
     if (err) {
-      console.log(err.message)
-      res.json({})
+      next(err)
       return
     }
 
-    console.log(data)
-    res.json({})
+    if (row) {
+      res.status(200).json(row)
+      return
+    }
+
+    res.status(400).json({ msg: "No match Found" })
+    
   })
+}
+
+export function UpdatePost(req, res) {
+
+  const id = parseInt(req.params?.id)
+
+  if (isNaN(id)) {
+    res.status(400).json({ msg: "id must be a Number" })
+    return
+  }
+
+  const tutorial = new Tutorial(req.body)
+
+  tutorial.UpdatePost(id, (err, chnages ) => {
+
+    if (err) {
+      next(err)
+      return
+    }
+
+    if (chnages) {
+      res.status(200).json({ msg: "The Data has been updated Sucessfully" })
+      return
+    }
+
+    res.status(400).json({ msg: "No match Found to Update" })
+
+  })
+
+  }
+
+export function deletePost(req, res) {
+
+  const id = parseInt(req.params?.id)
+
+  if (isNaN(id)) {
+    res.status(400).json({ msg: "id must be a Number" })
+    return
+  }
+
+  Tutorial.deletePost(id, (err, message) => {
+    if (err) {
+      next(err)
+      return
+    }
+
+    if (message) {
+      res.status(200).json({ msg: `The Data with ${id} has been deleted` })
+      return
+    }
+
+    res.status(400).json({ msg: "No match Found to delete" })
+  })
+  
+}
+
+export function deleteAll(req, res) {
+
+  Tutorial.deleteAll(function (err, message ) {
+    if (err) {
+      next(err)
+      return
+    }
+
+    res.status(200).json({msg : message})
+  })
+
 }
 
 export function retrieveAllPublished(req, res) {
   Tutorial.retrieveAllPublished((err, data) => {
     if (err) {
-      console.log(err.message)
-      res.json({})
+      next(err)
       return
     }
 
-    console.log(data)
-    res.json(data)
+    res.status(400).json(data)
   })
 }

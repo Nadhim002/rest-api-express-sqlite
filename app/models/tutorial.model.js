@@ -1,7 +1,5 @@
-import { red } from "colors/index.js"
 import DB from "../config/db.js"
 
-// constructor
 export class Tutorial {
 
   constructor(tutorial) {
@@ -11,33 +9,41 @@ export class Tutorial {
   }
 
   static retrieveAll(result) {
+
     const sqlQuery = "select * from tutorials"
 
     DB.all(sqlQuery, function (err, rows) {
+
       if (err) {
         result(err, null)
         return
       }
 
       result(null, rows)
+
     })
   }
 
   createPost(result) {
+
     const sqlQuery =
       "insert into tutorials (  title , description , published ) values( ? , ? , ? )"
-    DB.run(
-      sqlQuery,
-      [this.title, this.description, this.published],
+    
+    const values = [this.title, this.description, this.published]
+
+    console.log( values )
+
+    DB.run( sqlQuery, values ,
       function (err) {
         if (err) {
           result(err, null)
           return
         }
 
-        result(null, this.lastID)
+        result(null, this.lastID )
       }
     )
+
   }
 
   static findPost(id, result) {
@@ -58,9 +64,9 @@ export class Tutorial {
     })
   }
 
-  UpdatePost( idToUpdate, updatedTutorial, result ) {
+  UpdatePost( idToUpdate , result ) {
 
-    const sqlQuery = `update table tutorials set title = ? , description = ?  , published = ?  where id = ?`
+    const sqlQuery = `update tutorials set title = ? , description = ?  , published = ?  where id = ?`
 
     DB.run(sqlQuery , [  this.title , this.description , this.published , idToUpdate] , function (err) {
 
@@ -75,42 +81,17 @@ export class Tutorial {
         }
   
         result(null, null)
-        
+
       } )
 
   }
 
-  partiallyUpdatePost(idToUpdate, updatedTutorial, result) {
-
-    let columns = []
-    let values = []
-    
-    Object.keys(updatedTutorial).forEach((key) => {
-      if (!updatedTutorial[key]) {
-        columns.push(`${key} = ? `)
-        values.push(updatedTutorial[key])
-      }
-    })
-
-    if (columns.length < 0) {
-      result(null, null)
-      return
-    }
-
-    columns = columns.join(",")
-    values.push(idToUpdate)
-
-    const sqlQuery = `update table tutorials set ${columns} where id = ?`
-
-    DB.run(sqlQuery , values , )
-
-
-  }
-
   static deletePost(idToDelete, result) {
+
     const sqlQuery = " delete from tutorials where id = ? "
 
     DB.run(sqlQuery, [idToDelete], function (err) {
+
       if (err) {
         result(err, null)
         return
@@ -122,23 +103,12 @@ export class Tutorial {
       }
 
       result(null, null)
-    })
-  }
 
-  static retrieveAllPublished(result) {
-    const sqlQuery = "select * from tutorials where published = 1"
-
-    DB.all(sqlQuery, function (err, rows) {
-      if (err) {
-        result(err, null)
-        return
-      }
-
-      result(null, rows)
     })
   }
 
   static deleteAll(result) {
+
     const sqlQuery = " drop table tutorials "
 
     DB.run(sqlQuery, function (err) {
@@ -150,4 +120,20 @@ export class Tutorial {
       result(null, "Table Deleted Sucessfully")
     })
   }
+
+  static retrieveAllPublished(result) {
+    const sqlQuery = "select * from tutorials where published = 1"
+  
+    DB.all(sqlQuery, function (err, rows) {
+      if (err) {
+        result(err, null)
+        return
+      }
+  
+      result(null, rows)
+    })
+  }
+
+
 }
+
