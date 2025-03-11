@@ -22,7 +22,7 @@ export function findAll(req, res , next ) {
   })
 }
 
-export function createPost(req, res) {
+export function createPost(req, res , next ) {
 
   if (Object.keys(req.body).length === 0) {
     res.status(400).json({ msg: `The Input Cannot be empty` })
@@ -48,7 +48,7 @@ export function createPost(req, res) {
   })
 }
 
-export function findPost(req, res) {
+export function findPost(req, res , next) {
 
   const id = parseInt(req.params?.id)
 
@@ -73,7 +73,7 @@ export function findPost(req, res) {
   })
 }
 
-export function UpdatePost(req, res) {
+export function UpdatePost(req, res , next) {
 
   const id = parseInt(req.params?.id)
 
@@ -107,7 +107,7 @@ export function UpdatePost(req, res) {
 
   }
 
-export function deletePost(req, res) {
+export function deletePost(req, res , next ) {
 
   const id = parseInt(req.params?.id)
 
@@ -132,7 +132,7 @@ export function deletePost(req, res) {
   
 }
 
-export function deleteAll(req, res) {
+export function deleteAll(req, res , next ) {
 
   Tutorial.deleteAll(function (err, message ) {
     if (err) {
@@ -145,7 +145,7 @@ export function deleteAll(req, res) {
 
 }
 
-export function retrieveAllPublished(req, res) {
+export function retrieveAllPublished(req, res , next ) {
   Tutorial.retrieveAllPublished((err, data) => {
     if (err) {
       next(err)
