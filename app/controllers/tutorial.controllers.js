@@ -82,6 +82,11 @@ export function UpdatePost(req, res) {
     return
   }
 
+  if (Object.keys(req.body).length === 0) {
+    res.status(400).json({ msg: `The Input Cannot be empty` })
+    return
+  }
+
   const tutorial = new Tutorial(req.body)
 
   tutorial.UpdatePost(id, (err, chnages ) => {

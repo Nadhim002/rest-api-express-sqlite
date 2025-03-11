@@ -12,7 +12,6 @@ const absolutePath = path.resolve(__dirname, relativePath)
 // This is logging records
 const sql3 = sqlite.verbose()
 
-
 const DB = new sql3.Database( absolutePath , sqlite.OPEN_READWRITE , connected )
 
 function  connected( err ){

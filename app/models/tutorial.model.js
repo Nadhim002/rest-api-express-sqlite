@@ -10,7 +10,7 @@ export class Tutorial {
 
   static findAll(  contentToSearch , result) {
 
-    const sqlQuery = `select * from tutorials where title like ?  `
+    const sqlQuery = `select * from tutorials where title like ? `
 
     DB.all(sqlQuery, [`%${contentToSearch}%`] ,function (err, rows) {
 
@@ -30,8 +30,6 @@ export class Tutorial {
       "insert into tutorials (  title , description , published ) values( ? , ? , ? )"
     
     const values = [this.title, this.description, this.published]
-
-    console.log( values )
 
     DB.run( sqlQuery, values ,
       function (err) {
